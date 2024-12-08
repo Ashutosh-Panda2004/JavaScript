@@ -1,3 +1,278 @@
+### **Math Operations Between Strings and Numbers**
+
+#### **Example 37: Addition Between a String and a Number**
+```javascript
+console.log("10" + 5); // "105"
+```
+**Explanation:**  
+The `+` operator concatenates when one operand is a string, so `"10" + 5` results in `"105"`.
+
+---
+
+#### **Example 38: Subtraction Between a String and a Number**
+```javascript
+console.log("10" - 5); // 5
+```
+**Explanation:**  
+The `-` operator converts the string `"10"` into a number, and the result is `5`.
+
+---
+
+#### **Example 39: Multiplication Between a String and a Number**
+```javascript
+console.log("10" * 5); // 50
+```
+**Explanation:**  
+The `*` operator converts the string `"10"` into a number, resulting in `50`.
+
+---
+
+#### **Example 40: Division Between a String and a Number**
+```javascript
+console.log("10" / 2); // 5
+```
+**Explanation:**  
+The `/` operator converts the string `"10"` into a number, so the result is `5`.
+
+---
+
+#### **Example 41: Modulus Between a String and a Number**
+```javascript
+console.log("10" % 3); // 1
+```
+**Explanation:**  
+The `%` operator converts the string `"10"` into a number and computes the remainder, which is `1`.
+
+---
+
+#### **Example 42: Adding a String Representing a Non-Numeric Value**
+```javascript
+console.log("hello" - 5); // NaN
+```
+**Explanation:**  
+The string `"hello"` cannot be converted into a number, so the operation results in `NaN`.
+
+---
+
+#### **Example 43: Multiplying a String with Non-Numeric Value**
+```javascript
+console.log("hello" * 2); // NaN
+```
+**Explanation:**  
+The string `"hello"` cannot be converted to a number, so the result is `NaN`.
+
+---
+
+#### **Example 44: Adding Numbers as Strings**
+```javascript
+console.log("5" + "5"); // "55"
+```
+**Explanation:**  
+Both operands are strings, so they are concatenated, resulting in `"55"`.
+
+---
+
+#### **Example 45: Adding Empty Strings**
+```javascript
+console.log("" + 1); // "1"
+```
+**Explanation:**  
+An empty string concatenated with a number results in the number being converted to a string.
+
+---
+
+### **More Type Coercion Quirks**
+
+#### **Example 46: Mixed Type Comparisons**
+```javascript
+console.log(5 == "5"); // true
+```
+**Explanation:**  
+Loose equality (`==`) converts the string `"5"` into the number `5`.
+
+---
+
+#### **Example 47: Strict Equality with Different Types**
+```javascript
+console.log(5 === "5"); // false
+```
+**Explanation:**  
+Strict equality (`===`) checks type and value, so `5` and `"5"` are not strictly equal.
+
+---
+
+#### **Example 48: NaN in Comparisons**
+```javascript
+console.log(NaN == NaN); // false
+```
+**Explanation:**  
+`NaN` is not equal to itself by definition.
+
+---
+
+#### **Example 49: Boolean and Strings**
+```javascript
+console.log("true" == true); // false
+```
+**Explanation:**  
+`"true"` as a string is not coerced into a boolean value.
+
+---
+
+#### **Example 50: `null` and Zero**
+```javascript
+console.log(null == 0); // false
+console.log(null < 1);  // true
+```
+**Explanation:**  
+`null` loosely equals `undefined` but not `0`. However, comparisons like `<` coerce `null` to `0`.
+
+---
+
+### **Array and Object Quirks**
+
+#### **Example 51: Adding Arrays**
+```javascript
+console.log([1, 2] + [3, 4]); // "1,23,4"
+```
+**Explanation:**  
+Both arrays are converted to strings (`"1,2"` and `"3,4"`) and concatenated.
+
+---
+
+#### **Example 52: Array to Number**
+```javascript
+console.log(+[10]); // 10
+```
+**Explanation:**  
+The unary `+` converts the array to its numeric equivalent. `[10]` becomes `10`.
+
+---
+
+#### **Example 53: Empty Array to Number**
+```javascript
+console.log(+[]); // 0
+```
+**Explanation:**  
+An empty array converts to an empty string, which is coerced to `0`.
+
+---
+
+#### **Example 54: Object to String**
+```javascript
+console.log({} + "hello"); // "[object Object]hello"
+```
+**Explanation:**  
+The object is coerced into the string `"[object Object]"`.
+
+---
+
+#### **Example 55: Array Equality**
+```javascript
+console.log([] == []); // false
+```
+**Explanation:**  
+Arrays are compared by reference, not value.
+
+---
+
+### **Function and Scope Quirks**
+
+#### **Example 56: Function Returning `this`**
+```javascript
+function foo() {
+  return this;
+}
+console.log(foo()); // global object (or `undefined` in strict mode)
+```
+**Explanation:**  
+`this` in a non-strict function refers to the global object.
+
+---
+
+#### **Example 57: `this` in Arrow Functions**
+```javascript
+const foo = () => this;
+console.log(foo()); // global object
+```
+**Explanation:**  
+Arrow functions inherit `this` from their surrounding lexical scope.
+
+---
+
+#### **Example 58: Duplicate Function Parameters**
+```javascript
+function foo(a, a) {
+  console.log(a);
+}
+foo(1, 2); // 2
+```
+**Explanation:**  
+The second parameter overwrites the first.
+
+---
+
+#### **Example 59: Function Length Property**
+```javascript
+function foo(a, b, c) {}
+console.log(foo.length); // 3
+```
+**Explanation:**  
+The `length` property of a function represents the number of parameters.
+
+---
+
+#### **Example 60: Modifying Function's `arguments`**
+```javascript
+function foo(a) {
+  arguments[0] = 2;
+  console.log(a);
+}
+foo(1); // 2
+```
+**Explanation:**  
+The `arguments` object is linked to parameters in non-strict mode.
+
+---
+
+### **Event Loop Quirks**
+
+#### **Example 61: Order of Promises and `setTimeout`**
+```javascript
+console.log(1);
+setTimeout(() => console.log(2), 0);
+Promise.resolve().then(() => console.log(3));
+console.log(4);
+```
+**Output:**
+```
+1
+4
+3
+2
+```
+**Explanation:**  
+Promises are executed before `setTimeout` callbacks in the event loop.
+
+---
+
+#### **Example 62: `setTimeout` Inside a Loop**
+```javascript
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 0);
+}
+```
+**Output:**
+```
+3
+3
+3
+```
+**Explanation:**  
+`var` is function-scoped, so all callbacks share the same `i` after the loop finishes.
+
+---
+
 ### **Example 1: Adding Arrays**
 ```javascript
 console.log([] + []);
@@ -119,5 +394,282 @@ console.log(!![]); // true
 
 **Explanation:**
 - `[]` is truthy, so `![]` is `false`. Double negation (`!!`) converts the truthy value back to `true`.
+
+---
+
+### **Type Coercion Quirks**
+
+#### **Example 11: Coercion with `null`**
+```javascript
+console.log(null + 1); // 1
+```
+**Explanation:**  
+`null` is coerced to `0` when used in numeric operations.
+
+---
+
+#### **Example 12: Coercion with `undefined`**
+```javascript
+console.log(undefined + 1); // NaN
+```
+**Explanation:**  
+`undefined` cannot be coerced into a number, so the result is `NaN`.
+
+---
+
+#### **Example 13: Boolean to Number**
+```javascript
+console.log(true + true); // 2
+```
+**Explanation:**  
+`true` is coerced to `1`, so `1 + 1 = 2`.
+
+---
+
+#### **Example 14: Multiplying Strings**
+```javascript
+console.log("3" * "3"); // 9
+```
+**Explanation:**  
+JavaScript converts strings to numbers during multiplication.
+
+---
+
+#### **Example 15: Concatenation in Objects**
+```javascript
+console.log({} + 2); // "[object Object]2"
+```
+**Explanation:**  
+The object is converted to a string (`"[object Object]"`) and concatenated with `2`.
+
+---
+
+#### **Example 16: Coercion with Boolean and String**
+```javascript
+console.log(true + "test"); // "truetest"
+```
+**Explanation:**  
+`true` is converted to `"true"` and concatenated with `"test"`.
+
+---
+
+#### **Example 17: Division by Zero**
+```javascript
+console.log(1 / 0); // Infinity
+```
+**Explanation:**  
+JavaScript represents division by zero as `Infinity`.
+
+---
+
+#### **Example 18: Subtracting Booleans**
+```javascript
+console.log(true - false); // 1
+```
+**Explanation:**  
+`true` becomes `1`, and `false` becomes `0`. Thus, `1 - 0 = 1`.
+
+---
+
+#### **Example 19: Combining Boolean and String**
+```javascript
+console.log(false + " is false"); // "false is false"
+```
+**Explanation:**  
+`false` is coerced into the string `"false"`.
+
+---
+
+#### **Example 20: Adding an Empty Object**
+```javascript
+console.log({} + {}); // "[object Object][object Object]"
+```
+**Explanation:**  
+Both objects are converted to their string representations.
+
+---
+
+### **Equality Quirks**
+
+#### **Example 21: Loose Equality with Numbers and Strings**
+```javascript
+console.log(0 == ""); // true
+```
+**Explanation:**  
+`""` is coerced to `0` in loose equality.
+
+---
+
+#### **Example 22: Comparing Empty Arrays**
+```javascript
+console.log([] == 0); // true
+```
+**Explanation:**  
+`[]` is coerced into a string, then into `0`, so the comparison is true.
+
+---
+
+#### **Example 23: Comparing `null` and `0`**
+```javascript
+console.log(null > 0); // false
+console.log(null == 0); // false
+console.log(null >= 0); // true
+```
+**Explanation:**  
+`null` is only coerced in certain comparisons but not in equality checks.
+
+---
+
+#### **Example 24: `false` and Zero**
+```javascript
+console.log(false == 0); // true
+```
+**Explanation:**  
+`false` is coerced to `0`.
+
+---
+
+#### **Example 25: `undefined` and `null` in Comparisons**
+```javascript
+console.log(undefined > 0); // false
+console.log(undefined == 0); // false
+console.log(undefined < 0); // false
+```
+**Explanation:**  
+`undefined` cannot be converted to a meaningful numeric value.
+
+---
+
+### **Object Quirks**
+
+#### **Example 26: Array as an Object**
+```javascript
+const arr = [1, 2, 3];
+console.log(typeof arr); // "object"
+```
+**Explanation:**  
+Arrays are technically objects in JavaScript.
+
+---
+
+#### **Example 27: Adding Properties to a Function**
+```javascript
+function foo() {}
+foo.bar = "test";
+console.log(foo.bar); // "test"
+```
+**Explanation:**  
+Functions are objects and can have properties.
+
+---
+
+#### **Example 28: Adding Properties to a Number**
+```javascript
+let num = 5;
+num.test = "hello";
+console.log(num.test); // undefined
+```
+**Explanation:**  
+Primitive values like numbers are not objects, so properties cannot be added.
+
+---
+
+#### **Example 29: Comparing Two Objects**
+```javascript
+console.log({} === {}); // false
+```
+**Explanation:**  
+Objects are compared by reference, not value.
+
+---
+
+#### **Example 30: `toString` on an Object**
+```javascript
+console.log({}.toString()); // "[object Object]"
+```
+**Explanation:**  
+The default `toString` method returns this string for objects.
+
+---
+
+### **Function and Scope Quirks**
+
+#### **Example 31: Hoisting in Functions**
+```javascript
+console.log(a); // undefined
+var a = 10;
+```
+**Explanation:**  
+Variables declared with `var` are hoisted, but their value remains `undefined`.
+
+---
+
+#### **Example 32: Default Parameters**
+```javascript
+function foo(a, b = 5) {
+  console.log(a + b);
+}
+foo(3); // 8
+```
+**Explanation:**  
+Default parameters are used if no value is provided.
+
+---
+
+#### **Example 33: `this` Inside a Function**
+```javascript
+function foo() {
+  console.log(this);
+}
+foo(); // Window or global object
+```
+**Explanation:**  
+In non-strict mode, `this` in a function refers to the global object.
+
+---
+
+#### **Example 34: Arrow Functions and `this`**
+```javascript
+const obj = {
+  method: () => console.log(this),
+};
+obj.method(); // Window or global object
+```
+**Explanation:**  
+Arrow functions do not have their own `this`; they inherit it from the outer scope.
+
+---
+
+#### **Example 35: Function Overwriting**
+```javascript
+function foo() {
+  return 1;
+}
+function foo() {
+  return 2;
+}
+console.log(foo()); // 2
+```
+**Explanation:**  
+The second declaration overwrites the first.
+
+---
+
+### **Event Loop Quirks**
+
+#### **Example 36: Order of `setTimeout`**
+```javascript
+console.log(1);
+setTimeout(() => console.log(2), 0);
+console.log(3);
+```
+**Output:**
+```
+1
+3
+2
+```
+**Explanation:**  
+`setTimeout` is pushed to the event loop queue and executes after synchronous code.
 
 ---
