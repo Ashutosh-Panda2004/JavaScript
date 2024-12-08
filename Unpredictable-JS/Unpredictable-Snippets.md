@@ -673,3 +673,505 @@ console.log(3);
 `setTimeout` is pushed to the event loop queue and executes after synchronous code.
 
 ---
+
+Callback functions are a fundamental concept in JavaScript. They are functions passed as arguments to other functions to be executed later. Below are several examples of how callback functions work, along with their quirks and uses.
+
+---
+
+### **Example 1: Basic Callback**
+```javascript
+function greet(name, callback) {
+  console.log("Hello, " + name + "!");
+  callback();
+}
+
+function sayGoodbye() {
+  console.log("Goodbye!");
+}
+
+greet("Alice", sayGoodbye);
+// Output:
+// Hello, Alice!
+// Goodbye!
+```
+**Explanation:**  
+The `sayGoodbye` function is passed as a callback to `greet` and executed after the greeting.
+
+---
+
+### **Example 2: Anonymous Callback**
+```javascript
+function processNumber(num, callback) {
+  console.log("Processing number:", num);
+  callback(num);
+}
+
+processNumber(5, function (n) {
+  console.log("The square is:", n * n);
+});
+// Output:
+// Processing number: 5
+// The square is: 25
+```
+**Explanation:**  
+Instead of passing a named function, an anonymous function is used as the callback.
+
+---
+
+### **Example 3: Callback with a Timeout**
+```javascript
+setTimeout(() => {
+  console.log("This message is delayed by 2 seconds.");
+}, 2000);
+// Output (after 2 seconds):
+// This message is delayed by 2 seconds.
+```
+**Explanation:**  
+The `setTimeout` function accepts a callback that executes after the specified delay.
+
+---
+
+### **Example 4: Callback Inside an Array Method**
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+numbers.forEach((num) => {
+  console.log(num * 2);
+});
+// Output:
+// 2
+// 4
+// 6
+// 8
+// 10
+```
+**Explanation:**  
+The `forEach` method iterates over the array, calling the callback function for each element.
+
+---
+
+### **Example 5: Callback with `map`**
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+const squares = numbers.map((num) => num * num);
+console.log(squares);
+// Output:
+// [1, 4, 9, 16, 25]
+```
+**Explanation:**  
+The `map` method applies the callback to each element and returns a new array with the results.
+
+---
+
+### **Example 6: Chaining Callbacks**
+```javascript
+function step1(callback) {
+  console.log("Step 1 complete");
+  callback();
+}
+
+function step2(callback) {
+  console.log("Step 2 complete");
+  callback();
+}
+
+function step3() {
+  console.log("Step 3 complete");
+}
+
+step1(() => step2(step3));
+// Output:
+// Step 1 complete
+// Step 2 complete
+// Step 3 complete
+```
+**Explanation:**  
+Callbacks can be nested or chained for sequential execution of functions.
+
+---
+
+### **Example 7: Error Handling with Callbacks**
+```javascript
+function fetchData(callback, errorCallback) {
+  const success = Math.random() > 0.5; // Simulate success or failure
+  if (success) {
+    callback("Data loaded successfully!");
+  } else {
+    errorCallback("Failed to load data.");
+  }
+}
+
+fetchData(
+  (data) => console.log(data),
+  (error) => console.error(error)
+);
+// Output (randomly):
+// "Data loaded successfully!"
+// OR
+// "Failed to load data."
+```
+**Explanation:**  
+Callbacks can be used for error handling by providing a separate error callback.
+
+---
+
+### **Example 8: Callback in Event Listeners**
+```javascript
+document.body.addEventListener("click", () => {
+  console.log("Body clicked!");
+});
+// Output (on click):
+// Body clicked!
+```
+**Explanation:**  
+Event listeners use callbacks to define what happens when an event occurs.
+
+---
+
+### **Example 9: Callback Hell**
+```javascript
+setTimeout(() => {
+  console.log("Step 1");
+  setTimeout(() => {
+    console.log("Step 2");
+    setTimeout(() => {
+      console.log("Step 3");
+    }, 1000);
+  }, 1000);
+}, 1000);
+// Output (with delays):
+// Step 1
+// Step 2
+// Step 3
+```
+**Explanation:**  
+Nested callbacks like this can lead to "callback hell," making code difficult to read and maintain.
+
+---
+
+### **Example 10: Using Callbacks with Promises**
+```javascript
+function doTask(callback) {
+  setTimeout(() => {
+    callback("Task complete");
+  }, 1000);
+}
+
+doTask((message) => {
+  console.log(message);
+});
+// Output (after 1 second):
+// Task complete
+```
+**Explanation:**  
+Traditional callbacks can be used to handle asynchronous operations, but Promises are often preferred to avoid deeply nested callbacks.
+
+---
+
+### **Example 11: Passing Multiple Callbacks**
+```javascript
+function processText(text, successCallback, errorCallback) {
+  if (text) {
+    successCallback(text.toUpperCase());
+  } else {
+    errorCallback("No text provided");
+  }
+}
+
+processText(
+  "hello",
+  (result) => console.log("Success:", result),
+  (error) => console.error("Error:", error)
+);
+// Output:
+// Success: HELLO
+
+processText(
+  "",
+  (result) => console.log("Success:", result),
+  (error) => console.error("Error:", error)
+);
+// Output:
+// Error: No text provided
+```
+**Explanation:**  
+Multiple callbacks allow for more flexible handling of different scenarios.
+
+---
+
+### **Example 12: Callback with `reduce`**
+```javascript
+const numbers = [1, 2, 3, 4];
+const sum = numbers.reduce((acc, num) => acc + num, 0);
+console.log(sum);
+// Output:
+// 10
+```
+**Explanation:**  
+The `reduce` method uses a callback to accumulate values from an array.
+
+---
+
+
+## **Promises**
+
+A Promise is an object that represents the eventual completion (or failure) of an asynchronous operation.
+
+### **Example 1: Basic Promise**
+```javascript
+const myPromise = new Promise((resolve, reject) => {
+  const success = Math.random() > 0.5;
+  if (success) {
+    resolve("Promise resolved!");
+  } else {
+    reject("Promise rejected!");
+  }
+});
+
+myPromise
+  .then((message) => console.log(message)) // Handles resolve
+  .catch((error) => console.error(error)); // Handles reject
+```
+**Explanation:**  
+- The `then` method is used for resolved values.
+- The `catch` method is used for errors.
+
+---
+
+### **Example 2: Chaining Promises**
+```javascript
+const promise = new Promise((resolve) => {
+  resolve(2);
+});
+
+promise
+  .then((value) => {
+    console.log(value); // 2
+    return value * 2;
+  })
+  .then((value) => {
+    console.log(value); // 4
+    return value * 2;
+  })
+  .then((value) => {
+    console.log(value); // 8
+  });
+```
+**Explanation:**  
+Each `then` returns a new Promise, allowing chaining.
+
+---
+
+### **Example 3: `Promise.all`**
+```javascript
+const promise1 = Promise.resolve(10);
+const promise2 = new Promise((resolve) => setTimeout(() => resolve(20), 1000));
+const promise3 = Promise.resolve(30);
+
+Promise.all([promise1, promise2, promise3]).then((values) => {
+  console.log(values); // [10, 20, 30]
+});
+```
+**Explanation:**  
+`Promise.all` resolves when all promises are resolved or rejects if any promise fails.
+
+---
+
+### **Example 4: `Promise.race`**
+```javascript
+const promise1 = new Promise((resolve) => setTimeout(() => resolve("First"), 1000));
+const promise2 = new Promise((resolve) => setTimeout(() => resolve("Second"), 2000));
+
+Promise.race([promise1, promise2]).then((value) => {
+  console.log(value); // "First"
+});
+```
+**Explanation:**  
+`Promise.race` resolves or rejects as soon as the first promise settles.
+
+---
+
+### **Example 5: Handling Errors in Promises**
+```javascript
+const faultyPromise = new Promise((_, reject) => {
+  reject("Something went wrong!");
+});
+
+faultyPromise
+  .then((value) => console.log(value))
+  .catch((error) => console.error(error)) // Handles the error
+  .finally(() => console.log("Cleanup done."));
+// Output:
+// Something went wrong!
+// Cleanup done.
+```
+**Explanation:**  
+The `finally` method executes regardless of the promise's outcome.
+
+---
+
+---
+
+## **Async/Await**
+
+The `async/await` syntax simplifies working with promises and allows you to write asynchronous code that looks synchronous.
+
+### **Example 6: Basic `async/await`**
+```javascript
+async function fetchData() {
+  return "Data loaded!";
+}
+
+fetchData().then((data) => console.log(data));
+// Output:
+// Data loaded!
+```
+**Explanation:**  
+An `async` function always returns a Promise. The `return` value becomes the resolved value.
+
+---
+
+### **Example 7: Using `await` with Promises**
+```javascript
+function delayedPromise() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve("Delayed data"), 1000);
+  });
+}
+
+async function getData() {
+  const result = await delayedPromise();
+  console.log(result);
+}
+
+getData();
+// Output (after 1 second):
+// Delayed data
+```
+**Explanation:**  
+The `await` keyword pauses execution until the promise resolves.
+
+---
+
+### **Example 8: Error Handling with `async/await`**
+```javascript
+async function riskyOperation() {
+  throw new Error("Operation failed!");
+}
+
+async function execute() {
+  try {
+    await riskyOperation();
+  } catch (error) {
+    console.error(error.message); // Operation failed!
+  }
+}
+
+execute();
+```
+**Explanation:**  
+Use `try/catch` to handle errors in `async/await`.
+
+---
+
+### **Example 9: Parallel Execution with `await`**
+```javascript
+async function parallelExecution() {
+  const promise1 = new Promise((resolve) => setTimeout(() => resolve(10), 1000));
+  const promise2 = new Promise((resolve) => setTimeout(() => resolve(20), 2000));
+
+  const [result1, result2] = await Promise.all([promise1, promise2]);
+  console.log(result1, result2); // 10, 20
+}
+
+parallelExecution();
+```
+**Explanation:**  
+`Promise.all` allows running promises in parallel instead of awaiting them sequentially.
+
+---
+
+### **Example 10: Sequential Execution**
+```javascript
+async function sequentialExecution() {
+  const result1 = await new Promise((resolve) => setTimeout(() => resolve(10), 1000));
+  console.log(result1); // 10
+
+  const result2 = await new Promise((resolve) => setTimeout(() => resolve(20), 2000));
+  console.log(result2); // 20
+}
+
+sequentialExecution();
+```
+**Explanation:**  
+Each `await` waits for the previous operation to complete before proceeding.
+
+---
+
+### **Example 11: Combining Promises and `async/await`**
+```javascript
+async function fetchAndProcess() {
+  const promise1 = Promise.resolve(5);
+  const promise2 = Promise.resolve(10);
+
+  const data = await Promise.all([promise1, promise2]);
+  return data.reduce((sum, val) => sum + val, 0);
+}
+
+fetchAndProcess().then((result) => console.log(result)); // 15
+```
+**Explanation:**  
+`async/await` and Promises can be used together for complex workflows.
+
+---
+
+### **Example 12: Avoiding Deadlocks**
+```javascript
+async function process() {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  console.log("Done!");
+}
+
+process();
+// Output (after 1 second):
+// Done!
+```
+**Explanation:**  
+Ensure that all `await` calls are inside `async` functions to avoid deadlocks.
+
+---
+
+### **Example 13: Handling Multiple Errors**
+```javascript
+async function fetchWithError() {
+  const promise1 = Promise.reject("Error 1");
+  const promise2 = Promise.resolve("Success");
+
+  try {
+    const [result1, result2] = await Promise.all([promise1, promise2]);
+    console.log(result1, result2);
+  } catch (error) {
+    console.error("Caught error:", error); // Caught error: Error 1
+  }
+}
+
+fetchWithError();
+```
+**Explanation:**  
+If one promise in `Promise.all` fails, the entire batch fails.
+
+---
+
+### **Example 14: Returning a Promise from `async`**
+```javascript
+async function returnPromise() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve("Resolved!"), 1000);
+  });
+}
+
+returnPromise().then((result) => console.log(result)); // Resolved!
+```
+**Explanation:**  
+`async` functions can return promises, making them compatible with `.then()`.
+
+---
